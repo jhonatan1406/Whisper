@@ -21,21 +21,33 @@ def enviar_mensagens(cliente_socket):
     cliente_socket.send(apelido.encode('utf-8'))
 
     while True:
-        # O cliente pode digitar comandos ou mensagens no formato "apelido_destinatario: mensagem"
-        comando = input("\nDigite '/list' para ver usuários conectados ou 'apelido: mensagem' para enviar: ")
-        if comando.startswith('/list'):
-            # Solicitar lista de usuários
-            cliente_socket.send(comando.encode('utf-8'))
+        print("\nEscolha uma opção:")
+        print("1 - Listar todos usuários ativos")
+        print("2 - Enviar mensagem para todos")
+        print("3 - Enviar mensagem para uma pessoa específica")
+        opcao = input("\nDigite sua opção: ")
+
+        if opcao == '1':
+            # Solicitar lista de usuários conectados
+            cliente_socket.send("/list".encode('utf-8'))
+        elif opcao == '2':
+            # Enviar mensagem para todos os usuários
+            mensagem = input("Digite a mensagem que deseja enviar a todos: ")
+            cliente_socket.send(f"/broadcast:{mensagem}".encode('utf-8'))
+        elif opcao == '3':
+            # Enviar mensagem para uma pessoa específica
+            destinatario_mensagem = input("Digite 'apelido:mensagem': ")
+            cliente_socket.send(destinatario_mensagem.encode('utf-8'))
         else:
-            # Enviar mensagem para outro usuário
-            cliente_socket.send(comando.encode('utf-8'))
+            print("Opção inválida. Tente novamente.")
 
 def main():
     # Criar socket do cliente
     cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    
-    # Conectar ao servidor (endereços podem variar)
-    cliente.connect(('127.0.0.1', 2003))
+    host = '127.0.0.1'
+    port = 2003
+    # Conectar ao servidor
+    cliente.connect((host, port))
     
     # Iniciar threads para enviar e receber mensagens
     thread_receber = threading.Thread(target=receber_mensagens, args=(cliente,))
