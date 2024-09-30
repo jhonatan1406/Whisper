@@ -61,8 +61,6 @@ def main():
         # Aceitar conexão de um cliente
         cliente_socket, cliente_endereco = servidor.accept()
         print(f"Nova conexão de {cliente_endereco}")
-        # Solicitar apelido do cliente
-        cliente_socket.send("Digite seu apelido: ".encode('utf-8'))
         apelido = cliente_socket.recv(1024).decode('utf-8')
         clientes_conectados[apelido] = cliente_socket
         print(f"{apelido} conectado.")

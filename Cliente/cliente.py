@@ -10,7 +10,7 @@ def receber_mensagens(cliente_socket):
                 print(f"\n{mensagem}")
         except:
             # Fechar conexão se houver erro
-            print("Conexão perdida com o servidor.")
+            print("Cliente foi desconectado do servidor.")
             cliente_socket.close()
             break
 
@@ -25,6 +25,7 @@ def enviar_mensagens(cliente_socket):
         print("1 - Listar todos usuários ativos")
         print("2 - Enviar mensagem para todos")
         print("3 - Enviar mensagem para uma pessoa específica")
+        print("4 - Sair")
         opcao = input("\nDigite sua opção: ")
 
         if opcao == '1':
@@ -38,6 +39,11 @@ def enviar_mensagens(cliente_socket):
             # Enviar mensagem para uma pessoa específica
             destinatario_mensagem = input("Digite 'apelido:mensagem': ")
             cliente_socket.send(destinatario_mensagem.encode('utf-8'))
+        elif opcao == '4':
+            # Encerrar conexão
+            print("Desconectando...")
+            cliente_socket.close()
+            break
         else:
             print("Opção inválida. Tente novamente.")
 
