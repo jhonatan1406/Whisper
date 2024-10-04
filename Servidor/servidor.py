@@ -1,6 +1,5 @@
 import socket
 import threading
-
 # Dicionário para armazenar usuários conectados (apelido: socket)
 clientes_conectados = {}
 
@@ -15,7 +14,7 @@ def handle_cliente(cliente_socket, apelido):
 
             if msg.startswith('/list'):
                 # Enviar a lista de usuários conectados
-                lista_usuarios = "Usuários conectados: " + ", ".join(clientes_conectados.keys())
+                lista_usuarios = f"Atualmente, há {len(clientes_conectados)} usuário(s) conectado(s): " + ", ".join(clientes_conectados.keys())
                 cliente_socket.send(lista_usuarios.encode('utf-8'))
             elif msg.startswith('/broadcast:'):
                 # Enviar mensagem para todos os usuários conectados
@@ -65,6 +64,7 @@ def main():
         clientes_conectados[apelido] = cliente_socket
         print(f"{apelido} conectado.")
 
+        cliente_socket.send(f"Bem-vindo ao chat, {apelido}! Há {len(clientes_conectados)} usuários online.".encode('utf-8'))
         # Iniciar uma nova thread para gerenciar o cliente conectado
         thread = threading.Thread(target=handle_cliente, args=(cliente_socket, apelido))
         thread.start()

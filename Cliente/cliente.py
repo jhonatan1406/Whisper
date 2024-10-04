@@ -1,5 +1,6 @@
 import socket
 import threading
+import time
 
 def receber_mensagens(cliente_socket):
     while True:
@@ -16,11 +17,12 @@ def receber_mensagens(cliente_socket):
 
 def enviar_mensagens(cliente_socket):
     # Solicitar apelido do cliente
-    apelido = input("Digite seu apelido: ")
+    apelido = input("Bem vindo ao Whisper! Digite seu apelido: ")
     # Enviar o apelido ao servidor
     cliente_socket.send(apelido.encode('utf-8'))
 
     while True:
+        time.sleep(1)
         print("\nEscolha uma opção:")
         print("1 - Listar todos usuários ativos")
         print("2 - Enviar mensagem para todos")
